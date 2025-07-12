@@ -1,4 +1,4 @@
-use crate::physics::types::{Angle, Axis3D};
+use crate::physics::types::Angle;
 
 /// # Overview
 /// A quaternion is used in this project to represent a rotation in 3D space.
@@ -54,7 +54,9 @@ pub struct Quaternion {
     /// How much we are rotating by, in radians
     pub angle: Angle,
     /// On what axis we are rotating
-    pub axis: Axis3D,
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
 }
 
 impl Quaternion {
@@ -62,11 +64,9 @@ impl Quaternion {
         let half_angle = degree_angle.to_radians() / 2.0;
         Self {
             angle: Angle(half_angle.cos()),
-            axis: Axis3D {
-                x: x * half_angle.sin(),
-                y: y * half_angle.sin(),
-                z: z * half_angle.sin(),
-            },
+            x: x * half_angle.sin(),
+            y: y * half_angle.sin(),
+            z: z * half_angle.sin(),
         }
     }
 }
@@ -74,11 +74,9 @@ impl Default for Quaternion {
     fn default() -> Self {
         Self {
             angle: Angle(1.0),
-            axis: Axis3D {
-                x: 0.0,
-                y: 0.0,
-                z: 0.0,
-            },
+            x: 0.0,
+            y: 0.0,
+            z: 0.0,
         }
     }
 }
@@ -94,6 +92,6 @@ mod tests {
         // Check angle (real part)
         assert!((quaternion.angle.0 - 0.7071).abs() < 0.001);
         // Check z component
-        assert!((quaternion.axis.z - 0.7071).abs() < 0.001);
+        assert!((quaternion.z - 0.7071).abs() < 0.001);
     }
 }

@@ -21,44 +21,19 @@
 mod propeller;
 pub use propeller::Propeller;
 
-use crate::physics::{
-    state::{
-        acceleration::Acceleration, angular_velocity::AngularVelocity,
-        linear_velocity::LinearVelocity, orientation::Orientation, position::Position,
-    },
-    types::Grams,
-    Object,
-};
+use crate::physics::RigidBody;
 
-pub const WEIGHT: Grams = 200.0;
-pub const DEFAULT_DELTATIME_MS: usize = 16;
-
-// TODO: add forces!
 #[derive(Debug)]
 pub struct Drone {
-    pub position: Position,
-    pub orientation: Orientation,
-    pub linear_velocity: LinearVelocity,
-    pub angular_velocity: AngularVelocity,
-    pub acceleration: Acceleration,
+    body: RigidBody,
     pub propellers: [Propeller; 4],
 }
 
 impl Default for Drone {
     fn default() -> Self {
         Self {
-            position: Position::default(),
-            linear_velocity: LinearVelocity::default(),
-            angular_velocity: AngularVelocity::default(),
-            acceleration: Acceleration::default(),
-            orientation: Orientation::default(),
+            body: RigidBody::default(),
             propellers: [Propeller::default(); 4],
         }
-    }
-}
-
-impl Object for Drone {
-    fn mass(&self) -> Grams {
-        WEIGHT
     }
 }

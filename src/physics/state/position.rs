@@ -1,5 +1,5 @@
-use super::HasAxis3D;
-use crate::physics::types::Axis3D;
+use crate::physics::types::R3;
+use crate::r3_impl;
 
 /// # Overview
 /// Denotes the position of an object in 3D space as
@@ -23,30 +23,6 @@ use crate::physics::types::Axis3D;
 /// passed through a LOT, we will override the
 /// std::ops and make it as fast as possible.
 #[derive(Debug, Clone, Copy, PartialEq)]
-pub struct Position {
-    pub coordinates: Axis3D,
-}
+pub struct Position(pub R3);
 
-impl Position {
-    pub fn new(x: f64, y: f64, z: f64) -> Self {
-        Position {
-            coordinates: Axis3D { x, y, z },
-        }
-    }
-}
-
-impl Default for Position {
-    fn default() -> Self {
-        Position::new(0.0, 0.0, 0.0)
-    }
-}
-
-impl HasAxis3D for Position {
-    fn axis3d(&self) -> &Axis3D {
-        &self.coordinates
-    }
-
-    fn from_axis3d(axis: Axis3D) -> Self {
-        Position { coordinates: axis }
-    }
-}
+r3_impl!(Position);

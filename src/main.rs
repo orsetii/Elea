@@ -1,5 +1,3 @@
-use std::time::Duration;
-
 use elea::DroneSimulator;
 
 fn main() -> elea::Result<()> {
