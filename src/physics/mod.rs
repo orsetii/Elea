@@ -19,14 +19,10 @@
 //! we will fall behind actual real-world time more and more, the longer it goes on.
 //! There are some solutions like frame skipping but that is for a later date. TODO review this!
 
-use crate::physics::{
-    state::{
-        acceleration::Acceleration, angular_velocity::AngularVelocity,
-        linear_velocity::LinearVelocity, orientation::Orientation, position::Position,
-    },
-    types::Grams,
-};
+use crate::physics::types::Grams;
 
+pub mod body;
+pub mod force;
 pub mod math;
 pub mod state;
 pub mod types;
@@ -34,24 +30,3 @@ pub mod types;
 pub const AIR_DENSITY: f64 = 2.0;
 pub const WEIGHT: Grams = 200.0;
 pub const DEFAULT_DELTATIME_MS: u64 = 16;
-
-#[derive(Debug)]
-pub struct RigidBody {
-    pub position: Position,
-    pub orientation: Orientation,
-    pub linear_velocity: LinearVelocity,
-    pub angular_velocity: AngularVelocity,
-    pub acceleration: Acceleration,
-}
-
-impl Default for RigidBody {
-    fn default() -> Self {
-        Self {
-            position: Position::default(),
-            linear_velocity: LinearVelocity::default(),
-            angular_velocity: AngularVelocity::default(),
-            acceleration: Acceleration::default(),
-            orientation: Orientation::default(),
-        }
-    }
-}

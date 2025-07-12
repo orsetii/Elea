@@ -28,12 +28,13 @@ impl DroneSimulator {
     pub fn simulation_step(&mut self) -> Result<()> {
         let start_time = SystemTime::now();
 
+        self.drone.body.step(self.delta_time)?;
+
         // We store this now, as having it pass some conditions that later would have failed
         // (time passing from the match to the true/false blocks) could cause some real fucky bugs
         // perhaps we should log when its close, and def track if it does end up overruning at the end ig?
         let time_elapsed = start_time.elapsed()?;
 
-        // TODO use a smaller unit than ms here
         match self.delta_time < time_elapsed {
             true => {
                 eprintln!(

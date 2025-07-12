@@ -21,11 +21,11 @@
 mod propeller;
 pub use propeller::Propeller;
 
-use crate::physics::RigidBody;
+use crate::physics::body::RigidBody;
 
 #[derive(Debug)]
 pub struct Drone {
-    body: RigidBody,
+    pub body: RigidBody,
     pub propellers: [Propeller; 4],
 }
 
