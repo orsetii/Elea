@@ -15,12 +15,12 @@ Exploring physics and drone simulation!
 
 ### Rigid body Dynamics
 *WE ARE HERE!!*
-- Mass
-- Center of Mass
+- Mass - Done we just have a static kg
+- Center of Mass - Done we this is a fixed point, the centroid!
 - Moment of intertia
 - Linear and Angular Momentum
 - Forces
-- Torques
+- Torques - type is there but parked for now. Will do this last in this section
 
 By the end of this, we have a basic physics object we can move and rotate in 3d space.
 

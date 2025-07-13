@@ -32,7 +32,7 @@ pub struct Drone {
 impl Default for Drone {
     fn default() -> Self {
         Self {
-            body: RigidBody::default(),
+            body: RigidBody::new(10.0, 10.0, 10.0),
             propellers: [Propeller::default(); 4],
         }
     }

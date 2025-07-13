@@ -1,77 +1,106 @@
-//! Eculidean Vector types used in Elea, to represent various mechanics.
-//!
+//! Vector base for euclidean vector types used in Elea.
 
-/// # Overview
-/// Denotes the position of an object in 3D space as
-/// cartesian coordinates.
-///
-/// # Cartesian Coordinates
-/// When we talk about cartesian coordinates as a
-/// euclidean vector we are referring to the displacement
-/// vector from the origin (0,0,0) to the point (x,y,z)
-///
-/// ## Direction
-/// Direction is determined by the ratios between x, y and z.
-/// (3,4,5) point in the same direction as (6,8,10) they're
-/// parallel because one is just a scalar multiple of the other.
-///
-/// ## Magnitude
-/// The magnitude is calculated using the pythagoren theoroem
-/// extended to 3d: `sqrt((x*x)+(y*y)+(z*z))`
-///
-pub type Position = Vector3;
+use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 
-/// # Overview
-/// Acceleration is the rate of change of velocity of an object
-/// with respect to time.
-///
-/// What is important to remember, the units for
-/// acceleration are `m/s ** 2` or `m/s ** -2`
-/// This is because we are doing *velocity* (`m/s`)
-/// over *time* (`s`)
-///
-/// If we have a velocity delta of 3 `m/s` over
-/// 2 seconds, we have an average acceleration of `1.5 m/s ** 2`
-/// So, on average, for every second that passes the velocity
-/// is changing by `1.5 m/s`
-pub type Accleration = Vector3;
+#[macro_export]
+macro_rules! vector3_newtype {
+    ($name:ident) => {
+        impl Default for $name {
+            fn default() -> Self {
+                Self(Vector3::default())
+            }
+        }
 
-/// # Overview
-/// A measurement of speed in a certain direction
-/// of motion.
-///
-/// The way my brain can best interpret this is;
-/// Velocity is simply a force, and we are moving
-/// `n` m/s in 3 different directions `x`, `y` and `z`
-/// Calculate them up and we get our velocity total, see below!
-///
-///
-/// # Magnitude
-/// With a given velocity vector `v`: `(6,8,0) m/s`
-///
-/// We calculate the magnitude the the 3D pythagorean theorem:
-/// `sqrt((6*6) + (8*8) + (0*0)) = sqrt(36 + 64) = 10 m/s`
-///
-/// # Direction
-/// With a given velocity vector `v`: `(6,8,0) m/s`
-///
-/// We can divide each component by the magnitude to get
-/// the direction without any magnitude information:
-/// `(6,8,0) / 10 = (0.6,0.8,0)`
-/// In short, this is simply changing the magnitude to 1. We retain all
-/// direction information and we are just setting magnitude to a simple value.
-pub type LinearVelocity = Vector3;
+        impl $name {
+            pub fn new(x: f64, y: f64, z: f64) -> Self {
+                Self(Vector3::new(x, y, z))
+            }
+        }
 
-/// How an orientation of an object changes over time
-///
-/// It behaves very similar to 'standard' velocity.
-///
-/// The unit is *rad ⋅ s−1*
-/// We are using *Spin angular velocity* in this project
-pub type AngularVelocity = Vector3;
-pub type Force = Vector3;
+        impl std::ops::Deref for $name {
+            type Target = Vector3;
 
-/// Stores an angle in radians
+            fn deref(&self) -> &Self::Target {
+                &self.0
+            }
+        }
+
+        impl std::ops::DerefMut for $name {
+            fn deref_mut(&mut self) -> &mut Self::Target {
+                &mut self.0
+            }
+        }
+
+        impl std::ops::Add<$name> for $name {
+            type Output = $name;
+            fn add(self, rhs: $name) -> Self::Output {
+                $name(self.0 + rhs.0)
+            }
+        }
+
+        impl std::ops::AddAssign<$name> for $name {
+            fn add_assign(&mut self, rhs: $name) {
+                self.0 += rhs.0;
+            }
+        }
+
+        impl std::ops::Sub<$name> for $name {
+            type Output = $name;
+            fn sub(self, rhs: $name) -> Self::Output {
+                $name(self.0 - rhs.0)
+            }
+        }
+
+        impl std::ops::SubAssign<$name> for $name {
+            fn sub_assign(&mut self, rhs: $name) {
+                self.0 -= rhs.0;
+            }
+        }
+
+        impl std::ops::Mul<$name> for $name {
+            type Output = $name;
+            fn mul(self, rhs: $name) -> Self::Output {
+                $name(self.0 * rhs.0)
+            }
+        }
+
+        impl std::ops::MulAssign<$name> for $name {
+            fn mul_assign(&mut self, rhs: $name) {
+                self.0 *= rhs.0;
+            }
+        }
+
+        impl std::ops::Div<$name> for $name {
+            type Output = $name;
+            fn div(self, rhs: $name) -> Self::Output {
+                $name(self.0 / rhs.0)
+            }
+        }
+
+        impl std::ops::DivAssign<$name> for $name {
+            fn div_assign(&mut self, rhs: $name) {
+                self.0 /= rhs.0;
+            }
+        }
+
+        impl $name {
+            pub fn scalar_mul(&self, scalar: f64) -> Self {
+                $name(self.0.scalar_mul(scalar))
+            }
+
+            pub fn scalar_div(&self, scalar: f64) -> Self {
+                $name(self.0.scalar_div(scalar))
+            }
+        }
+
+        impl std::ops::Neg for $name {
+            type Output = $name;
+            fn neg(self) -> Self::Output {
+                $name(-self.0)
+            }
+        }
+    };
+}
 
 /// TODO: To speed this up, since this code WILL be
 /// passed through a LOT, we will override the
@@ -101,6 +130,22 @@ impl Vector3 {
             z: self.z / mag,
         }
     }
+
+    pub fn scalar_mul(&self, scalar: f64) -> Self {
+        Vector3 {
+            x: self.x * scalar,
+            y: self.y * scalar,
+            z: self.z * scalar,
+        }
+    }
+
+    pub fn scalar_div(&self, scalar: f64) -> Self {
+        Vector3 {
+            x: self.x / scalar,
+            y: self.y / scalar,
+            z: self.z / scalar,
+        }
+    }
 }
 
 impl std::fmt::Debug for Vector3 {
@@ -115,6 +160,93 @@ impl Default for Vector3 {
             x: 0.0,
             y: 0.0,
             z: 0.0,
+        }
+    }
+}
+
+impl Add<Vector3> for Vector3 {
+    type Output = Vector3;
+    fn add(self, rhs: Vector3) -> Self::Output {
+        Vector3 {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+            z: self.z + rhs.z,
+        }
+    }
+}
+
+impl AddAssign<Vector3> for Vector3 {
+    fn add_assign(&mut self, rhs: Vector3) {
+        self.x += rhs.x;
+        self.y += rhs.y;
+        self.z += rhs.z;
+    }
+}
+
+impl Sub<Vector3> for Vector3 {
+    type Output = Vector3;
+    fn sub(self, rhs: Vector3) -> Self::Output {
+        Vector3 {
+            x: self.x - rhs.x,
+            y: self.y - rhs.y,
+            z: self.z - rhs.z,
+        }
+    }
+}
+
+impl SubAssign<Vector3> for Vector3 {
+    fn sub_assign(&mut self, rhs: Vector3) {
+        self.x -= rhs.x;
+        self.y -= rhs.y;
+        self.z -= rhs.z;
+    }
+}
+
+impl Mul<Vector3> for Vector3 {
+    type Output = Vector3;
+    fn mul(self, rhs: Vector3) -> Self::Output {
+        Vector3 {
+            x: self.x * rhs.x,
+            y: self.y * rhs.y,
+            z: self.z * rhs.z,
+        }
+    }
+}
+
+impl MulAssign<Vector3> for Vector3 {
+    fn mul_assign(&mut self, rhs: Vector3) {
+        self.x *= rhs.x;
+        self.y *= rhs.y;
+        self.z *= rhs.z;
+    }
+}
+
+impl Div<Vector3> for Vector3 {
+    type Output = Vector3;
+    fn div(self, rhs: Vector3) -> Self::Output {
+        Vector3 {
+            x: self.x / rhs.x,
+            y: self.y / rhs.y,
+            z: self.z / rhs.z,
+        }
+    }
+}
+
+impl DivAssign<Vector3> for Vector3 {
+    fn div_assign(&mut self, rhs: Vector3) {
+        self.x /= rhs.x;
+        self.y /= rhs.y;
+        self.z /= rhs.z;
+    }
+}
+
+impl Neg for Vector3 {
+    type Output = Vector3;
+    fn neg(self) -> Self::Output {
+        Vector3 {
+            x: -self.x,
+            y: -self.y,
+            z: -self.z,
         }
     }
 }
