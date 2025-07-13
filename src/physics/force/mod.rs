@@ -1,22 +1,15 @@
-use crate::physics::{
-    force::{thrust::Thrust, weight::Weight},
-    types::R3,
-};
-
-mod drag;
-mod thrust;
-mod weight;
+use crate::physics::util::vector;
 
 #[derive(Debug)]
 pub struct Forces {
-    thrust: Thrust,
-    weight: Weight,
-    drag: drag::Drag,
+    thrust: vector::Force,
+    weight: vector::Force,
+    drag: vector::Force,
     // TODO add wind force!
 }
 
 impl Forces {
-    pub fn net_force(&self) -> R3 {
+    pub fn net_force(&self) -> vector::Force {
         // we may need to receive some input about propeller status
         // to determine thrust
         unimplemented!()
@@ -26,9 +19,9 @@ impl Forces {
 impl Default for Forces {
     fn default() -> Self {
         Self {
-            thrust: Thrust::default(),
-            weight: Weight::default(),
-            drag: drag::Drag::default(),
+            thrust: vector::Force::default(),
+            weight: vector::Force::default(),
+            drag: vector::Force::default(),
         }
     }
 }

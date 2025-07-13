@@ -19,14 +19,12 @@
 //! we will fall behind actual real-world time more and more, the longer it goes on.
 //! There are some solutions like frame skipping but that is for a later date. TODO review this!
 
-use crate::physics::types::Grams;
-
 pub mod body;
 pub mod force;
 pub mod math;
 pub mod state;
-pub mod types;
+mod util;
 
 pub const AIR_DENSITY: f64 = 2.0;
-pub const WEIGHT: Grams = 200.0;
+pub const WEIGHT: util::types::Grams = 200.0;
 pub const DEFAULT_DELTATIME_MS: u64 = 16;

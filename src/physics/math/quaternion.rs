@@ -1,4 +1,4 @@
-use crate::physics::types::Angle;
+use crate::physics::util::types::Angle;
 
 /// # Overview
 /// A quaternion is used in this project to represent a rotation in 3D space.

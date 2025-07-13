@@ -3,10 +3,8 @@ use std::time::Duration;
 use crate::{
     physics::{
         force::Forces,
-        state::{
-            acceleration::Acceleration, angular_velocity::AngularVelocity,
-            linear_velocity::LinearVelocity, orientation::Orientation, position::Position,
-        },
+        state::orientation::Orientation,
+        util::vector::{Accleration, AngularVelocity, LinearVelocity, Position},
     },
     Result,
 };
@@ -16,7 +14,7 @@ pub struct RigidBody {
     pub orientation: Orientation,
     pub linear_velocity: LinearVelocity,
     pub angular_velocity: AngularVelocity,
-    pub acceleration: Acceleration,
+    pub acceleration: Accleration,
     pub forces: Forces,
 }
 
@@ -40,7 +38,7 @@ impl Default for RigidBody {
             position: Position::default(),
             linear_velocity: LinearVelocity::default(),
             angular_velocity: AngularVelocity::default(),
-            acceleration: Acceleration::default(),
+            acceleration: Accleration::default(),
             orientation: Orientation::default(),
             forces: Forces::default(),
         }
